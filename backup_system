@@ -11,8 +11,8 @@ if grep -qs $base_directory /proc/mounts
 then
 	# define target directory and create it if needed
 	target_directory=$base_directory'/'$HOSTNAME
-    mkdir $target_directory
-    if cd $target_directory
+	mkdir $target_directory
+	if cd $target_directory
 	then
 		# get location of all mounted local partitions not being network mount, tmpfs etc. Just normal local partitions	    
 		df -x tmpfs -x nfs -x cifs -x devtmpfs -x smbfs --output=source,target | grep "^/dev/" | awk '{ print $2}' | while read i 
@@ -20,14 +20,15 @@ then
 			# define file name
 			filename="backup_$HOSTNAME"`echo "$i" | tr / _`'.tar.gz'
 			fullfilename="$target_directory"'/'"$filename"
-		    echo "Start backup of $i in $filename at `date`"
-		    # do backup
-		    tar -cpzf "$fullfilename" --exclude="$base_directory" --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --one-file-system "$i"
+			echo "Start backup of $i in $filename at `date`"
+			# do backup
+			tar -cpzf "$fullfilename" --exclude="$base_directory" --exclude=/dev --exclude=/proc --exclude=/sys --exclude=/tmp --one-file-system "$i"
 		done
-	    echo "done `date`"
+		echo "done `date`"
 	else
 		echo "backup error, can't change to directory"
 	fi
 else
-    echo "backup error, $target_directory not mounted"
+	echo "backup error, $target_directory not mounted"
 fi
+
