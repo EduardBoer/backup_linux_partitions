@@ -1,9 +1,8 @@
-#!/bin/bash -x
-# Eduard Boer 2017-12-10
+#!/bin/bash 
+# Eduard Boer 2018-01-08
 # Script to backup a Linux system to a single mounted remote directory using one tar file for each normal local partition
-# -x option on first line is to echo all commands
+# Base location where a directory will be created where tar files will be written to. Note: change this to your needs
 
-# Base location where tar files will be written to. Note: change this to your needs
 base_directory='/mnt/ChangeThisToYourMountedRemoteDirectory'
 
 # Check if base_directoy is mounted
@@ -11,9 +10,11 @@ if grep -qs $base_directory /proc/mounts
 then
 	# define target directory and create it if needed
 	target_directory=$base_directory'/'$HOSTNAME
-	mkdir $target_directory
+	mkdir $target_directory &> /dev/null
 	if cd $target_directory
 	then
+		exec &> backup.log
+		set -x # echo on
 		# get location of all mounted local partitions not being network mount, tmpfs etc. Just normal local partitions	    
 		df -x tmpfs -x nfs -x cifs -x devtmpfs -x smbfs --output=source,target | grep "^/dev/" | awk '{ print $2}' | while read i 
 		do 
@@ -31,4 +32,3 @@ then
 else
 	echo "backup error, $target_directory not mounted"
 fi
-
