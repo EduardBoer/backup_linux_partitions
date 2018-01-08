@@ -13,8 +13,8 @@ then
 	mkdir $target_directory &> /dev/null
 	if cd $target_directory
 	then
-		exec &> backup.log
-		set -x # echo on
+		exec &> backup.log	#all output redirect to file
+		set -x # echo commands 
 		# get location of all mounted local partitions not being network mount, tmpfs etc. Just normal local partitions	    
 		df -x tmpfs -x nfs -x cifs -x devtmpfs -x smbfs --output=source,target | grep "^/dev/" | awk '{ print $2}' | while read i 
 		do 
