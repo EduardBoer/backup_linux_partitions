@@ -1,7 +1,9 @@
 #!/bin/bash 
 # Eduard Boer 2018-01-08
-# Script to backup a Linux system to a single mounted remote directory using one tar file for each normal local partition
-# Base location where a directory will be created where tar files will be written to. Note: change this to your needs
+# Script to backup a Linux system to a remote directory 
+# The scripts create one tar file for each system partition. Only local partitions are backed up.
+
+# USAGE: Just Change The Line Below to the nfs/cifs mount point where backup must be written to and run the script
 
 base_directory='/mnt/ChangeThisToYourMountedRemoteDirectory'
 
