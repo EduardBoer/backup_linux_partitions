@@ -1,7 +1,7 @@
 #!/bin/bash 
 # Eduard Boer 2018-01-08
 # Script to backup a Linux system to a remote directory 
-# The scripts create one tar file for each system partition. Only local partitions are backed up.
+# With this script you know for sure that the entire system is backup up because all partitions are visible in the backup up using one tar file for each partition
 
 # USAGE: Just Change The Line Below to the nfs/cifs mount point where backup must be written to and run the script
 
