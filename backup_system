@@ -8,6 +8,17 @@
 base_directory='/mnt/ChangeThisToYourMountedRemoteDirectory'
 
 # Check if base_directoy is mounted
+unmount=-1
+if grep -qs $base_directory /proc/mounts
+then
+	#base_directoy is mounted, no unmount after this script is done
+	unmount=0
+else
+	#base_directoy not mounted, mount now, and unmount after this script is done
+	mount "$base_directory"
+	unmount=1
+fi
+
 if grep -qs $base_directory /proc/mounts
 then
 	# define target directory and create it if needed
@@ -31,6 +42,11 @@ then
 	else
 		echo "backup error, can't change to directory"
 	fi
+	# all done (or not), now unmount if needed
+	if [ $unmount = 1 ]
+	then
+		unmount "$base_directory"
+	fi
 else
-	echo "backup error, $target_directory not mounted"
+	echo "backup error, $target_directory not mounted and mount didn't work"
 fi
